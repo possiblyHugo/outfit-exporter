@@ -40,6 +40,10 @@ fn parse_link(link: &String) -> Result<String, UrlError> {
             .map(|c| c.collect::<Vec<_>>())
             .unwrap();
 
+        if url_segments.contains(&"catalog") {
+            return Err(UrlError::NotCatalogLink);
+        }
+
         for segment in url_segments {
             if segment.trim().parse::<i64>().is_ok() {
                 return Ok(segment.to_string());
