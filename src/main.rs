@@ -10,6 +10,12 @@ enum ExitOption {
     Exit,
 }
 
+enum UrlError {
+    NotCatalogLink,
+    LinkParsingError,
+    NoItemId,
+}
+
 fn main() {
     println!("{}", "[Outfit Menu]".yellow().bold());
     let mut exit_value: ExitOption = ExitOption::NewOutfit;
@@ -27,20 +33,22 @@ fn main() {
     println!("{}", "EXITING".red().bold());
 }
 
-fn parse_link(link: &String) -> Result<String, url::ParseError> {
-    let target_url: Url = Url::parse(&link)?;
-    let url_segments = target_url
-        .path_segments()
-        .map(|c| c.collect::<Vec<_>>())
-        .unwrap();
+fn parse_link(link: &String) -> Result<String, UrlError> {
+    if let Ok(target_url) = Url::parse(&link) {
+        let url_segments = target_url
+            .path_segments()
+            .map(|c| c.collect::<Vec<_>>())
+            .unwrap();
 
-    for segment in url_segments {
-        if segment.trim().parse::<i64>().is_ok() {
-            return Ok(segment.to_string());
+        for segment in url_segments {
+            if segment.trim().parse::<i64>().is_ok() {
+                return Ok(segment.to_string());
+            }
         }
+        Err(UrlError::NoItemId)
+    } else {
+        Err(UrlError::LinkParsingError)
     }
-
-    Err(url::ParseError::EmptyHost)
 }
 
 fn create_outfit() -> Vec<String> {
