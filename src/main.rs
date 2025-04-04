@@ -1,3 +1,4 @@
+#![allow(warnings)]
 use cli_clipboard::{ClipboardContext, ClipboardProvider};
 use colored::Colorize;
 use std::{fs::OpenOptions, io::Write};
@@ -60,8 +61,8 @@ fn create_outfit() -> Vec<String> {
 
 fn write_file(outfit_list: &String) {
     let mut file = OpenOptions::new()
+        .create(true)
         .append(true)
-        .create_new(true)
         .open("outfits.txt")
         .expect("Cannot open file");
 
