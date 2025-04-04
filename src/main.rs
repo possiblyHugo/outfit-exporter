@@ -27,7 +27,7 @@ fn main() {
     println!("{}", "EXITING".red().bold());
 }
 
-fn parse_link(link: String) -> Result<String, url::ParseError> {
+fn parse_link(link: &String) -> Result<String, url::ParseError> {
     let target_url: Url = Url::parse(&link)?;
     let url_segments = target_url
         .path_segments()
@@ -53,7 +53,12 @@ fn create_outfit() -> Vec<String> {
         if value <= String::from("-1") {
             break;
         }
-        outfit_list.push(parse_link(value).unwrap());
+
+        if let Ok(catalog_id) = parse_link(&value) {
+            outfit_list.push(catalog_id);
+        } else if let Err(E) = parse_link(&value) {
+            eprintln!("Error: {}", E);
+        }
         println!("{}", "next input: ".blue());
     }
     return outfit_list;
