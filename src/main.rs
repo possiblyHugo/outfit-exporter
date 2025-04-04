@@ -100,6 +100,5 @@ fn exit_menu(outfit_list: String) -> ExitOption {
         } else if value == 4 {
             return ExitOption::Exit;
         }
-        println!("Repeating loop");
     }
 }
