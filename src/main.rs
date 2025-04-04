@@ -1,6 +1,6 @@
-#![allow(warnings)]
 use cli_clipboard::{ClipboardContext, ClipboardProvider};
 use colored::Colorize;
+use std::fmt;
 use std::{fs::OpenOptions, io::Write};
 use text_io::read;
 use url::Url;
@@ -14,6 +14,16 @@ enum UrlError {
     NotCatalogLink,
     LinkParsingError,
     NoItemId,
+}
+
+impl fmt::Display for UrlError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            UrlError::NotCatalogLink => write!(f, "URL is not a catalog link"),
+            UrlError::LinkParsingError => write!(f, "Failed to parse link"),
+            UrlError::NoItemId => write!(f, "URL does not contain an item id"),
+        }
+    }
 }
 
 fn main() {
