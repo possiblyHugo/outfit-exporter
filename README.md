@@ -47,8 +47,8 @@ cargo run
 
 4. **Exit Menu:**
 
-```bash
 The program will show an exit menu with the following options:
+```bash
 - `1`: Create a new outfit.
 - `2`: Set the item list to the clipboard.
 - `3`: Write the item list to a file (`outfits.txt`).
